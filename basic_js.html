@@ -1,7 +1,9 @@
 <html>
     <body>
-        <input type="text" name="fname">
-        <input type="submit" value="Send">
+        <form id="myForm">
+            <input type="text" name="fname" value='Kanokwatt'>
+            <input type="submit" value="Send">            
+        </form>
 
         <button onclick="showDetail()">Show Detail</button>
         <p id="name1"></p>
@@ -12,7 +14,9 @@
                 var result = '';
                 var data = document.forms['myForm'];
                 for (i=0; i< data.length; i++) {
-                    result += data.element[i].value + "<br>";
+                    console.log(data[i].value);
+                    result += data[i].value + "<br>";
+                    
                 }
                 document.getElementById('name1').innerHTML = result;
             }
