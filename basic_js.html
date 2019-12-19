@@ -1,0 +1,21 @@
+<html>
+    <body>
+        <input type="text" name="fname">
+        <input type="submit" value="Send">
+
+        <button onclick="showDetail()">Show Detail</button>
+        <p id="name1"></p>
+
+        <script>
+            function showDetail() {
+                var i;
+                var result = '';
+                var data = document.forms['myForm'];
+                for (i=0; i< data.length; i++) {
+                    result += data.element[i].value + "<br>";
+                }
+                document.getElementById('name1').innerHTML = result;
+            }
+        </script>
+    </body>
+</html>
