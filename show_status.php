@@ -64,13 +64,14 @@ function showHint(str) {
     </form>
 
     <?php
+        // ฟอร์มสำหรับการค้นหา
         $txtSearch = "";
         $type = "";
 
         if(isset($_GET['txtSearch'])) $txtSearch = $_GET['txtSearch'];
         if(isset($_GET['Type']))      $type = $_GET['Type'];    
     ?>
-
+    <!-- Start HTML Form for Search -->
     <table border="1">
         <form>
         <tr>
@@ -78,16 +79,16 @@ function showHint(str) {
             <td><input type="text" name="txtSearch" size="14" value="<?php echo $txtSearch?>"></td>
             <td>
                 <select name="Type">
-                    <option value="1"> STATUS ID </option>
-                    <option value="2"> STATUS THAI </option>
-                    <option value="3"> STATUS ENGLISH </option>
+                    <option value="1" <?php if($type == 1) echo "selected" ?> > STATUS ID </option>
+                    <option value="2" <?php if($type == 2) echo "selected" ?> > STATUS THAI </option>
+                    <option value="3" <?php if($type == 3) echo "selected" ?> > STATUS ENGLISH </option>
                 </select>
             </td>
             <td><input type="submit" value="Search"></td>
         </tr>
         </form>
     </table>
-
+    <!-- Stop HTML Form for Search -->
 
     <table border="1">
         <tr>
@@ -95,44 +96,48 @@ function showHint(str) {
             <td>STATUS THAI</td>
             <td>STATUS ENGLISH</td>
             <td></td>
+            <td></td>
         </tr>
         <?php
+
+    // 1. Connect 
     require("connect.php");
-
-
 
     //$sql = "SELECT STATUS_ID, STATUS_TH, STATUS_EN FROM status";
     //$sql = "SELECT * FROM status";
     // $sql = "SELECT * FROM status WHERE STATUS_ID = 9";
     //$sql = "SELECT * FROM status WHERE STATUS_ID = " . $txtSearch;
 
-    $sql = "SELECT * FROM status";
+    // 2. Select SQL
+    $sql = "SELECT * FROM status ";
 
-    // 1. STATUS_ID
+        // 1. STATUS_ID
     if($type == 1) {
-        $sql = "SELECT * FROM status WHERE STATUS_ID = " . $txtSearch;
+        $sql .= "WHERE STATUS_ID LIKE '%" . $txtSearch . "%'";
     }
-    // 2. STATUS_TH
+        // 2. STATUS_TH
     else if($type == 2) {
-        $sql = "SELECT * FROM status WHERE STATUS_TH LIKE '%" . $txtSearch . "%'";
+        $sql .= "WHERE STATUS_TH LIKE '%" . $txtSearch . "%'";
     }
-    // 3. STATUS_EN
+        // 3. STATUS_EN
     else if($type == 3) {
-        $sql = "SELECT * FROM status WHERE STATUS_EN = " . $txtSearch;
+        $sql .= "WHERE STATUS_EN LIKE '%" . $txtSearch . "%'";
     }
 
+    // 3. Execute
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
         // output data of each row
         while($row = mysqli_fetch_assoc($result)) {
             //echo "id: " . $row["STATUS_ID"]. " - Name: " . $row["STATUS_TH"]. " " . $row["STATUS_EN"]. "<br>";
-            echo "<form action='delete_status.php' method='get'>";
+            echo "<form action='update_status.php' method='get'>";
             echo "<tr>";
                 echo "<td><input type='text' name='status_id' size='5' value=" . $row["STATUS_ID"]. " readonly></td>";
-                echo "<td>" . $row["STATUS_TH"]. "</td>";
-                echo "<td>" . $row["STATUS_EN"]. "</td>";   
-                echo "<td><input type='submit' value='Delete' onClick='return confirmDelete()'></td>";         
+                echo "<td><input type='text' name='status_th' size='5' value=" . $row["STATUS_TH"]. " ></td>";
+                echo "<td><input type='text' name='status_en' size='5' value=" . $row["STATUS_EN"]. " ></td>"; 
+                echo "<td><input type='submit' name='send' value='Delete' onClick='return confirmDelete()'></td>";   
+                echo "<td><input type='submit' name='send' value='Edit'></td>";       
             echo "</tr>";
             echo"</form>";
         }
