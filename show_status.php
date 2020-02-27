@@ -1,7 +1,9 @@
+<?php
+    session_start();
+?>
+
 <html>
-
 <head>
-
 <script>
     function confirmDelete() {
         return confirm("Are you sure to Delete?");
@@ -39,6 +41,7 @@ function showHint(str) {
 </head>
 
 <body>
+    <h3>Welcome, <?php echo $_SESSION['name']; ?></h3>
     <form name="myForm" action="add_status.php" method="get" onsubmit="return validateForm()">
     Suggestion: <span id="txtHint"></span>
     <table border="1">
