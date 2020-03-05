@@ -1,5 +1,15 @@
 <?php
+    // show_status.php
     session_start();
+
+    // if no session then back to login.php
+    if(!isset($_SESSION['user'])) {
+    // if(isset($_SESSION['user']) == null) {
+    //if($_SESSION['user'] == null) {
+        header("Location:login.php");
+    }
+    // else
+
 ?>
 
 <html>
@@ -42,6 +52,12 @@ function showHint(str) {
 
 <body>
     <h3>Welcome, <?php echo $_SESSION['name']; ?></h3>
+    <!-- start logout -->
+    <form action="logout.php">
+        <input type="submit" name="logout" value="Logout">
+    </form>
+    <!-- stop logout -->
+
     <form name="myForm" action="add_status.php" method="get" onsubmit="return validateForm()">
     Suggestion: <span id="txtHint"></span>
     <table border="1">
